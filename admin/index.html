@@ -1,40 +1,879 @@
 <!doctype html>
 <html lang="fa" dir="rtl" class="dark">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>پنل مدیریت | دیجی استور</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title/<پنل مدیریت | دیجی استور<title<
 <script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{cyber:{cyan:'#00f2fe',blue:'#4facfe',purple:'#9d4edd',green:'#00f5a0',dark:'#07090e',card:'#101624'}}}}}</script>
-<link rel="stylesheet" href="../assets/style.css">
-<style>body{background:#07090e}.admin-card{background:rgba(16,22,36,.88);border:1px solid rgba(255,255,255,.09);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.field{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.8rem 1rem;color:#fff;outline:none}.field:focus{border-color:#00f2fe}.btn{border-radius:12px;padding:.75rem 1rem;font-weight:800}.toast{position:fixed;bottom:20px;left:20px;right:20px;max-width:520px;margin:auto;z-index:99}</style>
+<script>
+tailwind.config = {
+darkMode: "class"
+};
+</script>
+<style>
+body {
+background: #07090e;
+}
+.card {
+background: rgba(16,22,36,.94);
+border: 1px solid rgba(255,255,255,.09);
+border-radius: 20px;
+box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.field {
+width: 100%;
+background: rgba(255,255,255,.05);
+border: 1px solid rgba(255,255,255,.1);
+border-radius: 12px;
+padding: .8rem 1rem;
+color: white;
+outline: none;
+box-sizing: border-box;
+}
+.field:focus {
+border-color: #00f2fe;
+}
+.btn {
+border-radius: 12px;
+padding: .75rem 1rem;
+font-weight: 800;
+cursor: pointer;
+}
+1
+.hidden {
+display: none !important;
+}
+</style>
 </head>
 <body class="min-h-screen text-slate-100">
-<div id="loginView" class="min-h-screen flex items-center justify-center p-5"><div class="admin-card w-full max-w-md p-7"><div class="text-center mb-7"><div class="text-3xl font-black text-white">دیجی استور</div><div class="text-cyan-400 text-xs mt-1">پنل مدیریت</div></div><form id="loginForm" class="space-y-4"><input id="email" class="field" type="email" placeholder="ایمیل مدیر" required><input id="password" class="field" type="password" placeholder="رمز عبور" required><button class="btn w-full bg-cyan-400 text-slate-950" type="submit">ورود به پنل</button></form><p id="loginError" class="text-red-400 text-sm mt-4 text-center"></p></div></div>
-<div id="appView" class="hidden min-h-screen"><header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/90 backdrop-blur-xl"><div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between"><div><b class="text-xl">پنل مدیریت</b><div id="userLabel" class="text-xs text-slate-400 mt-1"></div></div><div class="flex gap-2"><a href="../index.html" class="btn bg-white/10">مشاهده سایت</a><button id="logout" class="btn bg-red-500/10 text-red-300 border border-red-500/20">خروج</button></div></div></header><main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-6"><section class="grid grid-cols-2 md:grid-cols-4 gap-3"><div class="admin-card p-5"><div class="text-slate-400 text-xs">کل محصولات</div><div id="countAll" class="text-3xl font-black mt-2">0</div></div><div class="admin-card p-5"><div class="text-slate-400 text-xs">فعال</div><div id="countActive" class="text-3xl font-black mt-2 text-emerald-400">0</div></div><div class="admin-card p-5"><div class="text-slate-400 text-xs">غیرفعال</div><div id="countInactive" class="text-3xl font-black mt-2 text-red-400">0</div></div><div class="admin-card p-5"><div class="text-slate-400 text-xs">وضعیت</div><div class="text-lg font-black mt-2 text-cyan-400">Firebase ✓</div></div></section>
-<section class="admin-card p-5 sm:p-7"><div class="flex flex-wrap items-center justify-between gap-3 mb-5"><div><h1 class="text-xl font-black">مدیریت محصولات</h1><p class="text-xs text-slate-400 mt-1">تغییرات این بخش مستقیماً در Firestore ذخیره می‌شود.</p></div><div class="flex gap-2"><button id="seed" class="btn bg-purple-500/15 text-purple-300 border border-purple-500/20">ساخت ۸ محصول اولیه</button><button id="newProduct" class="btn bg-cyan-400 text-slate-950">+ محصول جدید</button></div></div><div id="productList" class="space-y-3"></div></section>
-<section id="editor" class="hidden admin-card p-5 sm:p-7"><div class="flex justify-between items-center mb-5"><h2 id="editorTitle" class="text-lg font-black">محصول جدید</h2><button id="cancel" class="text-slate-400">بستن</button></div><form id="productForm" class="grid md:grid-cols-2 gap-4"><input type="hidden" id="docId"><div><label class="text-xs text-slate-400">نام محصول</label><input id="name" class="field mt-2" required></div><div><label class="text-xs text-slate-400">دسته</label><select id="category" class="field mt-2"><option value="telegram">تلگرام</option><option value="instagram">اینستاگرام</option><option value="tools">ابزارها و سرور</option><option value="dev">طراحی ربات و وب‌سایت</option></select></div><div class="md:col-span-2"><label class="text-xs text-slate-400">توضیحات</label><textarea id="description" class="field mt-2 min-h-28" required></textarea></div><div><label class="text-xs text-slate-400">قیمت</label><input id="price" class="field mt-2" placeholder="مثلاً 150000"></div><div><label class="text-xs text-slate-400">متن برچسب</label><input id="badge" class="field mt-2" placeholder="ویژه"></div><div class="md:col-span-2 flex items-center gap-3"><input id="active" type="checkbox" class="w-5 h-5" checked><label for="active">نمایش محصول در سایت</label></div><div class="md:col-span-2 flex gap-2"><button class="btn bg-cyan-400 text-slate-950" type="submit">ذخیره محصول</button><button id="cancel2" class="btn bg-white/10" type="button">انصراف</button></div></form></section></main></div><div id="toast" class="toast hidden rounded-xl px-5 py-3 bg-slate-900 border border-white/10 text-center"></div>
+<!-- ================= LOGIN ================= -->
+<div id="loginView"
+class="min-h-screen flex items-center justify-center p-5">
+<div class="card w-full max-w-md p-7">
+<div class="text-center mb-7">
+<div class="text-3xl font-black">
+دیجی استور
+</div>
+<div class="text-cyan-400 text-xs mt-1">
+پنل مدیریت
+</div>
+</div>
+<form id="loginForm" class="space-y-4">
+<input
+id="email"
+class="field"
+type="email"
+"ایمیل مدیر"=placeholder
+autocomplete="username"
+required
+>
+<input
+id="password"
+class="field"
+type="password"
+"رمز عبور"=placeholder
+autocomplete="current-password"
+required
+>
+<button
+id="loginBtn"
+class="btn w-full bg-cyan-400 text-slate-950"
+type="submit"
+>
+ورود به پنل
+2
+</button>
+</form>
+<div
+id="loginError"
+class="text-red-400 text-sm mt-4 text-center break-words"
+></div>
+</div>
+</div>
+<!-- ================= ADMIN PANEL ================= -->
+<div id="appView" class="hidden min-h-screen">
+<header class="sticky top-0 z-40 border-b border-white/10 bg-slate-950/90
+backdrop-blur-xl">
+<div
+class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-3">
+<div>
+<b class="text-xl">
+پنل مدیریت
+</b>
+<div
+id="userLabel"
+class="text-xs text-slate-400 mt-1"
+></div>
+</div>
+<div class="flex gap-2">
+<a
+href="../index.html"
+class="btn bg-white/10"
+>
+مشاهده سایت
+</a>
+<button
+id="logout"
+class="btn bg-red-500/10 text-red-300 border border-red-500/20"
+>
+خروج
+</button>
+</div>
+3
+</div>
+</header>
+<main class="max-w-6xl mx-auto p-4 sm:p-6 space-y-6">
+<!-- STATISTICS -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="card p-5">
+<div class="text-slate-400 text-xs">
+کل محصوالت
+</div>
+<div
+id="countAll"
+class="text-3xl font-black mt-2"
+>
+ 0
+</div>
+</div>
+<div class="card p-5">
+<div class="text-slate-400 text-xs">
+فعال
+</div>
+<div
+id="countActive"
+class="text-3xl font-black mt-2 text-emerald-400"
+>
+ 0
+</div>
+</div>
+<div class="card p-5">
+<div class="text-slate-400 text-xs">
+غیرفعال
+</div>
+<div
+id="countInactive"
+class="text-3xl font-black mt-2 text-red-400"
+>
+ 0
+</div>
+4
+</div>
+<div class="card p-5">
+<div class="text-slate-400 text-xs">
+وضعیت
+</div>
+<div class="text-lg font-black mt-2 text-cyan-400">
+ Firebase ✓
+</div>
+</div>
+</section>
+<!-- PRODUCTS -->
+<section class="card p-5 sm:p-7">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+<div>
+<h1 class="text-xl font-black">
+مدیریت محصوالت
+</h1>
+<p class="text-xs text-slate-400 mt-1">
+.ذخیره میشوند Firestore محصوالت در
+</p>
+</div>
+<div class="flex gap-2">
+<button
+id="seed"
+class="btn bg-purple-500/15 text-purple-300 border borderpurple-500/20"
+>
+ساخت ۸ محصول اولیه
+</button>
+<button
+id="newProduct"
+class="btn bg-cyan-400 text-slate-950"
+>
+محصول جدید +
+</button>
+5
+</div>
+</div>
+<div
+id="productList"
+class="space-y-3"
+>
+<div class="text-center text-slate-400 py-10">
+...در حال بارگذاری
+</div>
+</div>
+</section>
+<!-- PRODUCT EDITOR -->
+<section
+id="editor"
+class="hidden card p-5 sm:p-7"
+>
+<div class="flex justify-between items-center mb-5">
+<h2
+id="editorTitle"
+class="text-lg font-black"
+>
+محصول جدید
+</h2>
+<button
+id="cancel"
+type="button"
+class="text-slate-400"
+>
+بستن
+</button>
+</div>
+<form
+id="productForm"
+class="grid md:grid-cols-2 gap-4"
+>
+<input
+6
+type="hidden"
+id="docId"
+>
+<div>
+<label class="text-xs text-slate-400">
+نام محصول
+</label>
+<input
+id="name"
+class="field mt-2"
+required
+>
+</div>
+<div>
+<label class="text-xs text-slate-400">
+دسته
+</label>
+<select
+id="category"
+class="field mt-2"
+>
+<option value="telegram">
+تلگرام
+</option>
+<option value="instagram">
+اینستاگرام
+</option>
+<option value="tools">
+ابزارها و سرور
+</option>
+<option value="dev">
+طراحی ربات و وبسایت
+</option>
+</select>
+</div>
+7
+<div class="md:col-span-2">
+<label class="text-xs text-slate-400">
+توضیحات
+</label>
+<textarea
+id="description"
+class="field mt-2 min-h-28"
+required
+></textarea>
+</div>
+<div>
+<label class="text-xs text-slate-400">
+قیمت
+</label>
+<input
+id="price"
+class="field mt-2"
+"مثالً 150000"=placeholder
+>
+</div>
+<div>
+<label class="text-xs text-slate-400">
+متن برچسب
+</label>
+<input
+id="badge"
+class="field mt-2"
+"ویژه"=placeholder
+>
+</div>
+<div class="md:col-span-2 flex items-center gap-3">
+<input
+id="active"
+type="checkbox"
+8
+class="w-5 h-5"
+checked
+>
+<label for="active">
+نمایش محصول در سایت
+</label>
+</div>
+<div class="md:col-span-2 flex gap-2">
+<button
+class="btn bg-cyan-400 text-slate-950"
+type="submit"
+>
+ذخیره محصول
+</button>
+<button
+id="cancel2"
+class="btn bg-white/10"
+type="button"
+>
+انصراف
+</button>
+</div>
+</form>
+</section>
+</main>
+</div>
+<div
+id="toast"
+class="hidden fixed bottom-5 left-5 right-5 max-w-xl mx-auto z-50 roundedxl px-5 py-3 bg-slate-900 border border-white/10 text-center"
+></div>
+<!-- ================= FIREBASE ================= -->
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js';
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, serverTimestamp, writeBatch } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js';
-const firebaseConfig={apiKey:'AIzaSyBRP3IVkuah0iJNESg3-qAZvFbQ66Mkvrs',authDomain:'digistore4-fb4c7.firebaseapp.com',projectId:'digistore4-fb4c7',storageBucket:'digistore4-fb4c7.firebasestorage.app',messagingSenderId:'588882276640',appId:'1:588882276640:web:5604a41309726b79252745',measurementId:'G-0QNQ3QF8WT'};
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
-const $=id=>document.getElementById(id); let products=[];
-function toast(t){$('toast').textContent=t;$('toast').classList.remove('hidden');setTimeout(()=>$('toast').classList.add('hidden'),2600)}
-function esc(s=''){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-async function load(){const snap=await getDocs(collection(db,'products'));products=snap.docs.map(d=>({id:d.id,...d.data()}));products.sort((a,b)=>(a.order??999)-(b.order??999));render()}
-function render(){ $('countAll').textContent=products.length;$('countActive').textContent=products.filter(x=>x.active!==false).length;$('countInactive').textContent=products.filter(x=>x.active===false).length; const box=$('productList'); if(!products.length){box.innerHTML='<div class="text-center text-slate-400 py-10">هنوز محصولی در Firestore نیست. روی «ساخت ۸ محصول اولیه» بزن.</div>';return} box.innerHTML=products.map(p=>`<div class="rounded-2xl border border-white/10 bg-white/[.03] p-4 flex flex-col md:flex-row gap-4 md:items-center justify-between"><div class="min-w-0"><div class="font-bold text-white">${esc(p.name)} ${p.active===false?'<span class="text-xs text-red-400">(غیرفعال)</span>':''}</div><div class="text-xs text-slate-400 mt-1">${esc(p.category||'')} · ${esc(p.price||'قیمت در ربات')} · ${esc(p.description||'')}</div></div><div class="flex gap-2 shrink-0"><button data-edit="${p.id}" class="btn bg-cyan-500/10 text-cyan-300">ویرایش</button><button data-toggle="${p.id}" class="btn bg-white/10">${p.active===false?'فعال کردن':'غیرفعال کردن'}</button><button data-del="${p.id}" class="btn bg-red-500/10 text-red-300">حذف</button></div></div>`).join(''); box.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>edit(b.dataset.edit));box.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggle(b.dataset.toggle));box.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>remove(b.dataset.del))}
-function openEditor(p){$('editor').classList.remove('hidden');$('editorTitle').textContent=p?'ویرایش محصول':'محصول جدید';$('docId').value=p?.id||'';$('name').value=p?.name||'';$('category').value=p?.category||'telegram';$('description').value=p?.description||'';$('price').value=p?.price||'';$('badge').value=p?.badge||'';$('active').checked=p?.active!==false;scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}
-function edit(id){openEditor(products.find(p=>p.id===id))}
-async function toggle(id){const p=products.find(x=>x.id===id);await updateDoc(doc(db,'products',id),{active:p.active===false});toast('وضعیت محصول تغییر کرد');await load()}
-async function remove(id){if(!confirm('این محصول حذف شود؟'))return;await deleteDoc(doc(db,'products',id));toast('محصول حذف شد');await load()}
-$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';try{await signInWithEmailAndPassword(auth,$('email').value,$('password').value)}catch(e){
-  console.error(e);
-  $('loginError').textContent = e.code + ' | ' + e.message;
+import { initializeApp }
+9
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {
+getAuth,
+signInWithEmailAndPassword,
+onAuthStateChanged,
+signOut
 }
-onAuthStateChanged(auth,async user=>{if(user){$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('userLabel').textContent=user.email;try{await load()}catch(e){toast('خطا در خواندن Firestore؛ قوانین دسترسی را بررسی کن.')}}else{$('loginView').classList.remove('hidden');$('appView').classList.add('hidden')}});
-$('logout').onclick=()=>signOut(auth);$('newProduct').onclick=()=>openEditor();$('cancel').onclick=()=>$('editor').classList.add('hidden');$('cancel2').onclick=()=>$('editor').classList.add('hidden');
-$('productForm').onsubmit=async e=>{e.preventDefault();const data={name:$('name').value.trim(),category:$('category').value,description:$('description').value.trim(),price:$('price').value.trim(),badge:$('badge').value.trim(),active:$('active').checked,updatedAt:serverTimestamp()};try{const id=$('docId').value;if(id)await updateDoc(doc(db,'products',id),data);else await addDoc(collection(db,'products'),{...data,createdAt:serverTimestamp(),order:products.length});toast('محصول با موفقیت ذخیره شد');$('editor').classList.add('hidden');await load()}catch(e){toast('ذخیره نشد؛ قوانین Firestore را بررسی کن.')}};
-const defaults=[['ریپورتر اینستاگرام','instagram','سرویس مدیریت گزارش تخلفات و ابزارهای مرتبط با اینستاگرام.',''],['ممبر فیک تلگرام','telegram','افزایش ممبر کانال و گروه تلگرام با سرعت و تعرفه مناسب.',''],['ری اکشن فیک تلگرام','telegram','ارسال واکنش‌های دلخواه به پست‌های تلگرام.',''],['بازدید فیک تلگرام','telegram','افزایش بازدید پست‌های تلگرام.',''],['اسمس بمبر پر قدرت','tools','ابزار تست و ارسال پیامک در محیط‌های مجاز و کنترل‌شده.',''],['کانفیگ ویتوری تضمینی','tools','کانفیگ‌های V2Ray با حجم و زمان دلخواه.',''],['سفارش ساخت ربات تلگرام','dev','طراحی و برنامه‌نویسی ربات تلگرام مطابق نیاز شما.',''],['سفارش ساخت وب‌سایت','dev','طراحی وب‌سایت‌های مدرن و ریسپانسیو مطابق ایده شما.','']];
-$('seed').onclick=async()=>{if(!confirm('۸ محصول اولیه به Firestore اضافه شوند؟'))return;const batch=writeBatch(db);defaults.forEach((x,i)=>{const ref=doc(collection(db,'products'));batch.set(ref,{name:x[0],category:x[1],description:x[2],price:x[3],badge:'ویژه',active:true,order:i,createdAt:serverTimestamp(),updatedAt:serverTimestamp()})});try{await batch.commit();toast('۸ محصول اولیه ساخته شد');await load()}catch(e){toast('ساخت محصولات انجام نشد؛ قوانین Firestore را بررسی کن.')}};
-</script></body></html>
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+getFirestore,
+collection,
+getDocs,
+addDoc,
+doc,
+updateDoc,
+deleteDoc,
+serverTimestamp,
+writeBatch
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+/* ================= FIREBASE CONFIG ================= */
+const firebaseConfig = {
+apiKey:
+"AIzaSyBRP3IVkuah0iJNESg3-qAZvFbQ66Mkvrs",
+authDomain:
+"digistore4-fb4c7.firebaseapp.com",
+projectId:
+"digistore4-fb4c7",
+storageBucket:
+"digistore4-fb4c7.firebasestorage.app",
+messagingSenderId:
+"588882276640",
+appId:
+"1:588882276640:web:5604a41309726b79252745",
+measurementId:
+"G-0QNQ3QF8WT"
+};
+10
+/* ================= INIT ================= */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let products = [];
+/* ================= TOAST ================= */
+function toast(message) {
+$("toast").textContent = message;
+$("toast").classList.remove("hidden");
+setTimeout(() => {
+$("toast").classList.add("hidden");
+}, 3000);
+}
+/* ================= ESCAPE ================= */
+function esc(value = "") {
+return String(value).replace(
+/[&<>'"]/g,
+char => ({
+"&": "&amp;",
+"<": "&lt;",
+">": "&gt;",
+"'": "&#39;",
+'"': "&quot;"
+}[char])
+);
+}
+/* ================= FIREBASE ERROR ================= */
+11
+function getLoginError(error) {
+const code = error?.code || "";
+const messages = {
+"auth/invalid-credential":
+,".ایمیل یا رمز عبور صحیح نیست"
+"auth/invalid-login-credentials":
+,".ایمیل یا رمز عبور صحیح نیست"
+"auth/user-not-found":
+,".پیدا نشد Firebase این ایمیل در"
+"auth/wrong-password":
+,".رمز عبور اشتباه است"
+"auth/invalid-email":
+,".فرمت ایمیل صحیح نیست"
+"auth/user-disabled":
+,".غیرفعال شده است Firebase این حساب در"
+"auth/operation-not-allowed":
+,".فعال نیست Firebase در Password/Email ورود با"
+"auth/too-many-requests":
+,".تعداد تالشها زیاد شده. کمی بعد دوباره امتحان کن"
+"auth/network-request-failed":
+".برقرار نشد Firebase اتصال به"
+};
+return messages[code]
+|| `خطای Firebase: ${code || "نامشخص — {"$}error?.message || ""}`;
+}
+/* ================= LOAD PRODUCTS ================= */
+async function loadProducts() {
+const snap =
+await getDocs(
+collection(db, "products")
+);
+products =
+12
+snap.docs.map(item => ({
+id: item.id,
+...item.data()
+}));
+products.sort(
+(a,b) =>
+(a.order ?? 999) -
+(b.order ?? 999)
+);
+renderProducts();
+}
+/* ================= RENDER ================= */
+function renderProducts() {
+$("countAll").textContent =
+products.length;
+$("countActive").textContent =
+products.filter(
+p => p.active !== false
+).length;
+$("countInactive").textContent =
+products.filter(
+p => p.active === false
+).length;
+const box =
+$("productList");
+if (!products.length) {
+box.innerHTML = `
+ <div class="text-center text-slate-400 py-10">
+.وجود ندارد Firestore هنوز محصولی در
+ </div>
+ `;
+return;
+}
+13
+box.innerHTML =
+products.map(p => `
+ <div
+ class="rounded-2xl border border-white/10 bg-white/[.03] p-4
+ flex flex-col md:flex-row gap-4 md:items-center justify-between"
+ >
+ <div class="min-w-0">
+ <div class="font-bold text-white">
+${esc(p.name)}
+${
+p.active === false
+? '<span class="text-xs text-red-400">(غیرفعال>(/span>'
+: ""
+}
+ </div>
+ <div class="text-xs text-slate-400 mt-1">
+${esc(p.category || "")}
+ ·
+{("قیمت در ربات" || price.p(esc{$
+ ·
+${esc(p.description || "")}
+ </div>
+ </div>
+ <div class="flex gap-2 shrink-0">
+ <button
+ data-edit="${esc(p.id)}"
+ class="btn bg-cyan-500/10 text-cyan-300"
+ >
+ویرایش
+ </button>
+ <button
+ data-toggle="${esc(p.id)}"
+ class="btn bg-white/10"
+14
+ >
+${
+p.active === false
+"فعال کردن" ?
+"غیرفعال کردن" :
+}
+ </button>
+ <button
+ data-delete="${esc(p.id)}"
+ class="btn bg-red-500/10 text-red-300"
+ >
+حذف
+ </button>
+ </div>
+ </div>
+ `).join("");
+box.querySelectorAll("[data-edit]")
+.forEach(button => {
+button.onclick = () =>
+editProduct(button.dataset.edit);
+});
+box.querySelectorAll("[data-toggle]")
+.forEach(button => {
+button.onclick = () =>
+toggleProduct(button.dataset.toggle);
+});
+box.querySelectorAll("[data-delete]")
+.forEach(button => {
+button.onclick = () =>
+deleteProduct(button.dataset.delete);
+});
+}
+15
+/* ================= EDITOR ================= */
+function openEditor(product = null) {
+$("editor").classList.remove("hidden");
+$("editorTitle").textContent =
+product
+"ویرایش محصول" ?
+;"محصول جدید" :
+$("docId").value =
+product?.id ?? "";
+$("name").value =
+product?.name ?? "";
+$("category").value =
+product?.category ?? "telegram";
+$("description").value =
+product?.description ?? "";
+$("price").value =
+product?.price ?? "";
+$("badge").value =
+product?.badge ?? "";
+$("active").checked =
+product?.active !== false;
+window.scrollTo({
+top: document.body.scrollHeight,
+behavior: "smooth"
+});
+}
+function editProduct(id) {
+const product =
+products.find(
+p => p.id === id
+);
+if (!product) {
+16
+;(".محصول پیدا نشد")toast
+return;
+}
+openEditor(product);
+}
+/* ================= TOGGLE ================= */
+async function toggleProduct(id) {
+try {
+const product =
+products.find(
+p => p.id === id
+);
+if (!product) return;
+await updateDoc(
+doc(db, "products", id),
+{
+active:
+product.active === false
+}
+);
+;(".وضعیت محصول تغییر کرد")toast
+await loadProducts();
+} catch (error) {
+console.error(error);
+toast(
++ " :خطا"
+(error.code || error.message)
+);
+}
+}
+/* ================= DELETE ================= */
+17
+async function deleteProduct(id) {
+(("این محصول حذف شود؟")confirm (!if
+return;
+try {
+await deleteDoc(
+doc(db, "products", id)
+);
+;(".محصول حذف شد")toast
+await loadProducts();
+} catch (error) {
+console.error(error);
+toast(
++ " :خطا"
+(error.code || error.message)
+);
+}
+}
+/* ================= LOGIN ================= */
+$("loginForm").addEventListener(
+"submit",
+async event => {
+event.preventDefault();
+$("loginError").textContent = "";
+$("loginBtn").disabled = true;
+$("loginBtn").textContent =
+;"...در حال ورود"
+const email =
+$("email").value.trim();
+const password =
+18
+$("password").value;
+try {
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+} catch (error) {
+console.error(
+"FIREBASE LOGIN ERROR:",
+error
+);
+$("loginError").textContent =
+getLoginError(error);
+} finally {
+$("loginBtn").disabled = false;
+$("loginBtn").textContent =
+;"ورود به پنل"
+}
+}
+);
+/* ================= AUTH STATE ================= */
+onAuthStateChanged(
+auth,
+async user => {
+if (!user) {
+$("loginView")
+.classList.remove("hidden");
+$("appView")
+.classList.add("hidden");
+return;
+}
+19
+$("loginView")
+.classList.add("hidden");
+$("appView")
+.classList.remove("hidden");
+$("userLabel").textContent =
+user.email || "";
+try {
+await loadProducts();
+} catch (error) {
+console.error(
+"FIRESTORE ERROR:",
+error
+);
+toast(
++ " :خطا داد Firestore ورود موفق بود اما"
+(error.code || error.message)
+);
+}
+}
+);
+/* ================= LOGOUT ================= */
+$("logout").onclick =
+async () => {
+await signOut(auth);
+};
+/* ================= NEW PRODUCT ================= */
+$("newProduct").onclick =
+() => openEditor();
+20
+/* ================= CANCEL ================= */
+$("cancel").onclick =
+() => {
+$("editor")
+.classList.add("hidden");
+};
+$("cancel2").onclick =
+() => {
+$("editor")
+.classList.add("hidden");
+};
+/* ================= SAVE PRODUCT ================= */
+$("productForm").addEventListener(
+"submit",
+async event => {
+event.preventDefault();
+const data = {
+name:
+$("name").value.trim(),
+category:
+$("category").value,
+description:
+$("description").value.trim(),
+price:
+$("price").value.trim(),
+badge:
+$("badge").value.trim(),
+active:
+$("active").checked,
+updatedAt:
+serverTimestamp()
+21
+};
+try {
+const id =
+$("docId").value;
+if (id) {
+await updateDoc(
+doc(db, "products", id),
+data
+);
+} else {
+await addDoc(
+collection(db, "products"),
+{
+...data,
+createdAt:
+serverTimestamp(),
+order:
+products.length
+}
+);
+}
+toast(
+".محصول با موفقیت ذخیره شد"
+);
+$("editor")
+.classList.add("hidden");
+await loadProducts();
+} catch (error) {
+console.error(
+"SAVE ERROR:",
+error
+);
+22
+toast(
++ " :ذخیره نشد"
+(error.code || error.message)
+);
+}
+}
+);
+/* ================= DEFAULT PRODUCTS ================= */
+const defaults = [
+[
+,"ریپورتر اینستاگرام"
+"instagram",
+".سرویس مدیریت گزارش تخلفات و ابزارهای مرتبط با اینستاگرام"
+],
+[
+,"ممبر فیک تلگرام"
+"telegram",
+".افزایش ممبر کانال و گروه تلگرام با سرعت و تعرفه مناسب"
+],
+[
+,"ری اکشن فیک تلگرام"
+"telegram",
+".ارسال واکنشهای دلخواه به پستهای تلگرام"
+],
+[
+,"بازدید فیک تلگرام"
+"telegram",
+".افزایش بازدید پستهای تلگرام"
+],
+[
+,"اسمس بمبر پر قدرت"
+"tools",
+".ابزار تست و ارسال پیامک در محیطهای مجاز و کنترلشده"
+],
+[
+,"کانفیگ ویتوری تضمینی"
+"tools",
+".با حجم و زمان دلخواه Ray2V کانفیگهای"
+],
+23
+[
+,"سفارش ساخت ربات تلگرام"
+"dev",
+".طراحی و برنامهنویسی ربات تلگرام مطابق نیاز شما"
+],
+[
+,"سفارش ساخت وبسایت"
+"dev",
+".طراحی وبسایتهای مدرن و ریسپانسیو مطابق ایده شما"
+]
+];
+/* ================= SEED ================= */
+$("seed").onclick =
+async () => {
+if (
+!confirm(
+"اضافه شوند؟ Firestore محصول اولیه به ۸"
+)
+)
+return;
+try {
+const batch =
+writeBatch(db);
+defaults.forEach(
+(item, index) => {
+const ref =
+doc(
+collection(
+db,
+"products"
+)
+);
+batch.set(
+ref,
+{
+24
+name:
+item[0],
+category:
+item[1],
+description:
+item[2],
+price:
+"",
+badge:
+,"ویژه"
+active:
+true,
+order:
+index,
+createdAt:
+serverTimestamp(),
+updatedAt:
+serverTimestamp()
+}
+);
+}
+);
+await batch.commit();
+toast(
+".محصول اولیه ساخته شد ۸"
+);
+await loadProducts();
+} catch (error) {
+console.error(
+"SEED ERROR:",
+error
+);
+25
+toast(
++ " :خطا"
+(error.code || error.message)
+);
+}
+};
+</script>
+</body>
+</html>
+26
