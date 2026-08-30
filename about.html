@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>درباره ما و توسعه‌دهنده | دیجی استور</title>
+  <meta name="description" content="آشنایی با دیجی استور و علیرضا دانشمند، توسعه‌دهنده و ارائه‌دهنده تخصصی‌ترین ربات‌ها و خدمات مجازی.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              cyan: '#00f2fe',
+              blue: '#4facfe',
+              purple: '#9d4edd',
+              green: '#00f5a0',
+              pink: '#ff007f',
+              dark: '#07090e',
+              card: '#101624'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Custom Cyber Stylesheet -->
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="min-h-screen text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+
+  <!-- Background Ambient Glows -->
+  <div class="orb w-96 h-96 bg-purple-500/10 top-0 right-10 animate-pulse-glow"></div>
+  <div class="orb w-[30rem] h-[30rem] bg-cyan-600/10 bottom-10 left-10"></div>
+
+  <!-- Header Navigation -->
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 nav-glass py-4 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-400 via-blue-500 to-purple-600 p-[2px] shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-all duration-300">
+          <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
+            <svg class="w-6 h-6 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-xl font-black tracking-tight text-white group-hover:text-cyan-300 transition-colors">دیجی استور</span>
+          <span class="text-[10px] text-cyan-400 font-semibold tracking-widest uppercase">DIGI STORE</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="index.html" class="text-slate-300 hover:text-cyan-400 transition-colors">
+          <span>خانه</span>
+        </a>
+        <a href="products.html" class="text-slate-300 hover:text-cyan-400 transition-colors">
+          <span>محصولات و خدمات</span>
+        </a>
+        <a href="about.html" class="text-cyan-400 font-bold transition-colors">
+          <span>درباره توسعه‌دهنده</span>
+        </a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-3">
+        <a href="https://t.me/Digistore5_bot" target="_blank" rel="noopener noreferrer" 
+           class="btn-neon-cyan px-5 py-2.5 text-xs sm:text-sm flex items-center gap-2 font-bold cursor-pointer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.536-.196 1.006.128.832.926z"/></svg>
+          <span>ربات تلگرام</span>
+        </a>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-white bg-white/5 border border-white/10 rounded-xl" aria-label="منوی موبایل">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2 border-t border-white/10 mt-3 flex flex-col gap-3 text-sm">
+      <a href="index.html" class="px-3 py-2 rounded-lg hover:bg-white/5 text-slate-300">صفحه اصلی</a>
+      <a href="products.html" class="px-3 py-2 rounded-lg hover:bg-white/5 text-slate-300">محصولات و خدمات</a>
+      <a href="about.html" class="px-3 py-2 rounded-lg bg-white/5 text-cyan-400 font-bold">درباره توسعه‌دهنده</a>
+      <div class="pt-2 flex flex-col gap-2">
+        <a href="https://t.me/Digistore5_bot" target="_blank" class="w-full text-center py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-bold">ربات تلگرام @Digistore5_bot</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Main Section -->
+  <main class="flex-grow pt-32 pb-16 px-4 sm:px-8 max-w-5xl mx-auto w-full relative z-10">
+    
+    <!-- Developer & Brand Card -->
+    <div class="cyber-card p-8 sm:p-12 mb-10 reveal">
+      <div class="flex flex-col md:flex-row items-center gap-8">
+        
+        <!-- Avatar / Tech Badge -->
+        <div class="relative group">
+          <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl bg-gradient-to-tr from-cyan-400 via-blue-600 to-purple-600 p-[3px] shadow-2xl shadow-cyan-500/20">
+            <div class="w-full h-full bg-slate-950 rounded-[21px] flex flex-col items-center justify-center p-4 text-center">
+              <span class="text-3xl sm:text-4xl font-black neon-gradient-text">DS</span>
+              <span class="text-[11px] text-cyan-400 font-mono mt-1 font-bold">DIGI STORE</span>
+            </div>
+          </div>
+          <div class="absolute -bottom-2 -right-2 px-3 py-1 rounded-full bg-emerald-500 text-slate-950 text-[10px] font-black border-2 border-slate-950">
+            تأیید شده
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="flex-1 text-center md:text-right">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-3">
+            <span>توسعه‌دهنده سیستم‌های هوشمند و خدمات مجازی</span>
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-black text-white mb-2">علیرضا دانشمند</h1>
+          <p class="text-cyan-400 font-mono text-sm font-semibold mb-4">بنیان‌گذار و برنامه‌نویس دیجی استور</p>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+            ارائه دهنده خدمات آنلاین، اسکریپت‌های اختصاصی شبکه، ابزارهای کاربردی اینستاگرام و تلگرام، سرورهای پرسرعت ویتوری و پیاده‌سازی انواع ربات‌ها و وب‌سایت‌های سفارشی با بالاترین سطح امنیت و کیفیت.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+            <a href="https://t.me/Digistore5_bot" target="_blank" class="btn-neon-cyan px-6 py-3 text-sm font-bold flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.536-.196 1.006.128.832.926z"/></svg>
+              <span>ربات دیجی استور (@Digistore5_bot)</span>
+            </a>
+            <a href="https://t.me/Alirezadaneshman" target="_blank" class="btn-cyber-outline px-6 py-3 text-sm font-bold flex items-center gap-2">
+              <span>پشتیبانی تلگرام (@Alirezadaneshman)</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Guarantees & Values -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal mb-10">
+      <div class="cyber-card p-6">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">سرعت و اتوماسیون</h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          کلیه سفارشات از طریق ربات هوشمند با پردازش آنی و بدون تأخیر ثبت و فعال‌سازی می‌شوند.
+        </p>
+      </div>
+
+      <div class="cyber-card p-6">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">تضمین کیفیت ۱۰۰٪</h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          کیفیت بالای سورس‌ها، کانفیگ‌های بدون قطعی و پشتیبانی کامل پس از تحویل پروژه.
+        </p>
+      </div>
+
+      <div class="cyber-card p-6">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">قیمت‌های رقابتی</h3>
+        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+          حذف واسطه‌ها و ارائه مستقیم خدمات با پایین‌ترین تعرفه ممکن در سراسر بازار مجازی.
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-slate-950/80 backdrop-blur-md relative z-10 pt-10 pb-8 px-4 sm:px-8">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <!-- Brand & Info -->
+      <div class="flex flex-col items-center md:items-start text-center md:text-right">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xl font-black text-white">دیجی استور</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-400 font-mono">DIGI STORE</span>
+        </div>
+        <p class="text-xs text-slate-400 max-w-sm">مرکز تخصصی ارائه خدمات مجازی، ابزارهای شبکه، اسمس بمبر و برنامه‌نویسی اختصاصی ربات و وب‌سایت.</p>
+        <div class="mt-3 text-xs font-semibold text-cyan-400">
+          توسعه دهنده: <span class="text-white font-bold">علیرضا دانشمند</span>
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div class="flex items-center gap-6 text-xs text-slate-300 font-medium">
+        <a href="index.html" class="hover:text-cyan-400 transition-colors">صفحه اصلی</a>
+        <a href="products.html" class="hover:text-cyan-400 transition-colors">لیست محصولات</a>
+        <a href="about.html" class="text-cyan-400 font-bold">درباره توسعه‌دهنده</a>
+      </div>
+
+      <!-- Social Telegram Links -->
+      <div class="flex flex-col items-center md:items-end gap-2">
+        <a href="https://t.me/Digistore5_bot" target="_blank" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs hover:bg-cyan-500/20 transition-all font-semibold">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.536-.196 1.006.128.832.926z"/></svg>
+          <span>ربات تلگرام: @Digistore5_bot</span>
+        </a>
+        <a href="https://t.me/Alirezadaneshman" target="_blank" class="text-[11px] text-slate-400 hover:text-white transition-colors">
+          اکانت پشتیبانی تلگرام: <span class="text-cyan-400 font-mono">@Alirezadaneshman</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-white/5 text-center text-slate-500 text-[11px]">
+      تمامی حقوق برای دیجی استور محفوظ است. طراحی و توسعه توسط علیرضا دانشمند.
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="assets/main.js"></script>
+</body>
+</html>
