@@ -1,0 +1,6 @@
+{
+  "name": "دیجی استور",
+  "description": "خدمات مجازی پیشرفته دیجی استور: ریپورتر اینستاگرام، ممبر، ری‌اکشن و بازدید فیک تلگرام، اسمس بمبر پرقدرت، کانفیگ ویتوری تضمینی، سفارش ساخت ربات و سایت.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
