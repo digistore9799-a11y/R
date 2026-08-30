@@ -28,7 +28,10 @@ function openEditor(p){$('editor').classList.remove('hidden');$('editorTitle').t
 function edit(id){openEditor(products.find(p=>p.id===id))}
 async function toggle(id){const p=products.find(x=>x.id===id);await updateDoc(doc(db,'products',id),{active:p.active===false});toast('وضعیت محصول تغییر کرد');await load()}
 async function remove(id){if(!confirm('این محصول حذف شود؟'))return;await deleteDoc(doc(db,'products',id));toast('محصول حذف شد');await load()}
-$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';try{await signInWithEmailAndPassword(auth,$('email').value,$('password').value)}catch(e){$('loginError').textContent='ایمیل یا رمز عبور نادرست است.'}}
+$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='';try{await signInWithEmailAndPassword(auth,$('email').value,$('password').value)}catch(e){
+  console.error(e);
+  $('loginError').textContent = e.code + ' | ' + e.message;
+}
 onAuthStateChanged(auth,async user=>{if(user){$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('userLabel').textContent=user.email;try{await load()}catch(e){toast('خطا در خواندن Firestore؛ قوانین دسترسی را بررسی کن.')}}else{$('loginView').classList.remove('hidden');$('appView').classList.add('hidden')}});
 $('logout').onclick=()=>signOut(auth);$('newProduct').onclick=()=>openEditor();$('cancel').onclick=()=>$('editor').classList.add('hidden');$('cancel2').onclick=()=>$('editor').classList.add('hidden');
 $('productForm').onsubmit=async e=>{e.preventDefault();const data={name:$('name').value.trim(),category:$('category').value,description:$('description').value.trim(),price:$('price').value.trim(),badge:$('badge').value.trim(),active:$('active').checked,updatedAt:serverTimestamp()};try{const id=$('docId').value;if(id)await updateDoc(doc(db,'products',id),data);else await addDoc(collection(db,'products'),{...data,createdAt:serverTimestamp(),order:products.length});toast('محصول با موفقیت ذخیره شد');$('editor').classList.add('hidden');await load()}catch(e){toast('ذخیره نشد؛ قوانین Firestore را بررسی کن.')}};
